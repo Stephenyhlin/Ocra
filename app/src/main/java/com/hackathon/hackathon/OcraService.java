@@ -1,5 +1,5 @@
 package com.hackathon.hackathon;
 
-public class OrcaService {
+public class OcraService {
     
 }

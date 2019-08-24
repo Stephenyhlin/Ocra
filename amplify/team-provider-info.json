@@ -1,0 +1,14 @@
+{
+    "ocra": {
+        "awscloudformation": {
+            "AuthRoleName": "ocra-ocra-20190824155240-authRole",
+            "UnauthRoleArn": "arn:aws:iam::790747842997:role/ocra-ocra-20190824155240-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::790747842997:role/ocra-ocra-20190824155240-authRole",
+            "Region": "us-east-2",
+            "DeploymentBucketName": "ocra-ocra-20190824155240-deployment",
+            "UnauthRoleName": "ocra-ocra-20190824155240-unauthRole",
+            "StackName": "ocra-ocra-20190824155240",
+            "StackId": "arn:aws:cloudformation:us-east-2:790747842997:stack/ocra-ocra-20190824155240/bb45f400-c6a8-11e9-bdb7-02e473ddfb1a"
+        }
+    }
+}

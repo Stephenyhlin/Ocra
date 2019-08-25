@@ -44,5 +44,8 @@ public class MainPage extends AppCompatActivity {
         });
     }
 
-    
+    public void NextPage(View view){
+        startActivity(new Intent(MainPage.this,Main3Activity.class));
+    }
+
 }

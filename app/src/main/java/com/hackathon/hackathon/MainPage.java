@@ -2,27 +2,17 @@ package com.hackathon.hackathon;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-public class MainActivity extends AppCompatActivity {
+public class MainPage extends AppCompatActivity {
     ImageView imageView;
     TextView textView;
     Button btnCam;
@@ -31,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_page_layout);
 
         btnCam = (Button)findViewById(R.id.btnCapture);
         imageView = (ImageView)findViewById(R.id.textureView);

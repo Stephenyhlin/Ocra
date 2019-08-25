@@ -1,5 +1,5 @@
 package com.hackathon.hackathon;
 
-
-public interface OrcaController {
+public class OcraService {
+    
 }

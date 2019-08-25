@@ -10,7 +10,6 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.io.File;
 import java.io.OutputStream;
@@ -19,26 +18,15 @@ import java.io.FileOutputStream;
 
 public class MainPage extends AppCompatActivity {
     ImageView imageView;
-    TextView textView;
-    Button btnCam;
+    Button btnCam2;
     private static final int REQUEST_CAPTURE_IMAGE=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_page_layout);
 
-        btnCam = (Button)findViewById(R.id.btnCapture);
-        imageView = (ImageView)findViewById(R.id.textureView);
-
-        btnCam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent,REQUEST_CAPTURE_IMAGE);
-            }
-
-        });
+        Intent intent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent,REQUEST_CAPTURE_IMAGE);
         File image = new File(AppContext.getAppContext().getFilesDir(), "file.png");
         boolean uploaded = new UploadToS3().s3Upload(image);
         System.out.print(uploaded);
@@ -47,9 +35,20 @@ public class MainPage extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        setContentView(R.layout.main_page_layout);
+
+        imageView = (ImageView)findViewById(R.id.textureView);
         Bitmap bitmap = (Bitmap)data.getExtras().get("data");
         persistImage(bitmap);
         imageView.setImageBitmap(bitmap);
+        btnCam2 = (Button)(findViewById(R.id.btnCapture2));
+        btnCam2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent,REQUEST_CAPTURE_IMAGE);
+            }
+        });
     }
 
     private void persistImage(Bitmap bitmap) {
@@ -66,4 +65,6 @@ public class MainPage extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
 }

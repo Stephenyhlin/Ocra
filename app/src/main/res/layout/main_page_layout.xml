@@ -11,7 +11,7 @@
     <ImageView
         android:id="@+id/textureView"
         android:layout_width="387dp"
-        android:layout_height="500dp"
+        android:layout_height="444dp"
         android:layout_marginStart="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="15dp"

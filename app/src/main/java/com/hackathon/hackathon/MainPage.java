@@ -12,6 +12,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
+
+
 public class MainPage extends AppCompatActivity {
     ImageView imageView;
     TextView textView;
@@ -34,12 +39,31 @@ public class MainPage extends AppCompatActivity {
             }
 
         });
+        File image = new File(AppContext.getAppContext().getFilesDir(), "file.png");
+        boolean uploaded = new UploadToS3().s3Upload(image);
+        System.out.print(uploaded);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bitmap = (Bitmap)data.getExtras().get("data");
+        persistImage(bitmap);
         imageView.setImageBitmap(bitmap);
+    }
+
+    private void persistImage(Bitmap bitmap) {
+        File filesDir = AppContext.getAppContext().getFilesDir();
+        File imageFile = new File(filesDir, "image.png");
+
+        OutputStream os;
+        try {
+            os = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

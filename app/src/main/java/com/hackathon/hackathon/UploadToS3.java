@@ -10,12 +10,9 @@ import java.io.File;
 
 public class UploadToS3 {
 
-    public boolean s3Upload(String fileName) {
+    public boolean s3Upload(File file) {
         Regions clientRegion = Regions.US_EAST_2;
         String bucketName = "ocra-ocra-20190824155240-deployment";
-        String[] fileNameArray = fileName.split("/");
-        String fileObjKeyName = fileNameArray[fileNameArray.length-1];
-
 
         try {
             //This code expects that you have AWS credentials set up per:
@@ -25,7 +22,7 @@ public class UploadToS3 {
                     .build();
 
             // Upload a file as a new object with ContentType and title specified.
-            PutObjectRequest request = new PutObjectRequest(bucketName, fileObjKeyName, new File(fileName));
+            PutObjectRequest request = new PutObjectRequest(bucketName, "file.png", file);
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType("plain/text");
             metadata.addUserMetadata("x-amz-meta-title", "someTitle");

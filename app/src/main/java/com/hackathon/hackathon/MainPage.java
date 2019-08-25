@@ -21,24 +21,17 @@ public class MainPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_page_layout);
 
-        btnCam = (Button)findViewById(R.id.btnCapture);
-        imageView = (ImageView)findViewById(R.id.textureView);
-
-        btnCam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent,REQUEST_CAPTURE_IMAGE);
-            }
-
-        });
+        Intent intent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent,REQUEST_CAPTURE_IMAGE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        setContentView(R.layout.main_page_layout);
+
+        imageView = (ImageView)findViewById(R.id.textureView);
         Bitmap bitmap = (Bitmap)data.getExtras().get("data");
         imageView.setImageBitmap(bitmap);
     }

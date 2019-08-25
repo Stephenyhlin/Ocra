@@ -1,6 +1,5 @@
 package com.hackathon.hackathon;
 
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Regions;
@@ -66,7 +65,7 @@ public class UploadToS3 {
                     initResponse.getUploadId(), partETags);
             s3Client.completeMultipartUpload(compRequest);
             return true;
-        } catch (AmazonServiceException | SdkClientException e) {
+        } catch (SdkClientException e) {
             // The call was transmitted successfully, but Amazon S3 couldn't process
             // it, so it returned an error response.
             e.printStackTrace();

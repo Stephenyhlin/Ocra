@@ -10,11 +10,12 @@ import java.io.File;
 
 public class UploadToS3 {
 
-    public boolean s3Upload() {
+    public boolean s3Upload(String fileName) {
         Regions clientRegion = Regions.US_EAST_2;
-        String bucketName = "*** Bucket name ***";
-        String fileObjKeyName = "*** File object key name ***";
-        String fileName = "*** Path to file to upload ***";
+        String bucketName = "ocra-ocra-20190824155240-deployment";
+        String[] fileNameArray = fileName.split("/");
+        String fileObjKeyName = fileNameArray[fileNameArray.length-1];
+
 
         try {
             //This code expects that you have AWS credentials set up per:

@@ -40,9 +40,11 @@ apply plugin: 'com.amazonaws.appsync'
 
 dependencies {
     //AppSync SDK
-    implementation 'com.amazonaws:aws-java-sdk:1.11.618'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+    implementation 'com.amazonaws:aws-android-sdk-s3:2.7.+'
+    implementation 'com.amazonaws:aws-android-sdk-cognito:2.7.+'
+    implementation ('com.amazonaws:aws-android-sdk-mobile-client:2.7.+@aar') { transitive = true }
 }
 
 dependencies {

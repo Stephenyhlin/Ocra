@@ -36,8 +36,6 @@ public class MainPage extends AppCompatActivity {
         AWSMobileClient.getInstance().initialize(this).execute();
         Intent intent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent,REQUEST_CAPTURE_IMAGE);
-        // boolean uploaded = new UploadToS3().s3Upload(image);
-        //System.out.print(uploaded);
     }
 
     @Override

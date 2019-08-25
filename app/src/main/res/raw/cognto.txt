@@ -1,0 +1,6 @@
+// Initialize the Amazon Cognito credentials provider
+CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+    getApplicationContext(),
+    "us-east-2:4b0f3f3d-c3d3-40fd-80b7-7fb5ece6eda5", // Identity pool ID
+    Regions.US_EAST_2 // Region
+);

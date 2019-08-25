@@ -15,7 +15,7 @@ import android.widget.TextView;
 public class MainPage extends AppCompatActivity {
     ImageView imageView;
     TextView textView;
-    Button btnCam;
+    Button btnCam2;
     private static final int REQUEST_CAPTURE_IMAGE=1;
 
     @Override
@@ -34,5 +34,13 @@ public class MainPage extends AppCompatActivity {
         imageView = (ImageView)findViewById(R.id.textureView);
         Bitmap bitmap = (Bitmap)data.getExtras().get("data");
         imageView.setImageBitmap(bitmap);
+        btnCam2 = (Button)(findViewById(R.id.btnCapture2));
+        btnCam2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent,REQUEST_CAPTURE_IMAGE);
+            }
+        });
     }
 }

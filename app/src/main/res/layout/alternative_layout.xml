@@ -7,7 +7,7 @@
     tools:context=".Alternatives">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/yourItem"
+        android:id="@+id/container"
         android:layout_width="0dp"
         android:layout_height="150dp"
         app:cardBackgroundColor="@color/colorPrimaryDark"

@@ -31,7 +31,7 @@ public class Alternatives extends AppCompatActivity {
         return true;
     }
     public void sendRequest(String searchObject){
-        final TextView textView = (TextView) findViewById(R.id.price2);
+        final TextView textView = (TextView) findViewById(R.id.yourItem);
 // ...
 
 // Instantiate the RequestQueue.

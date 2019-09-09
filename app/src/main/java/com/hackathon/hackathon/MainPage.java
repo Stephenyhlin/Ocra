@@ -39,18 +39,16 @@ public class MainPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         AWSMobileClient.getInstance().initialize(this).execute();
-        Uri photoURI = takePhoto();
         setContentView(R.layout.main_page_layout);
         imageView = (ImageView)findViewById(R.id.textureView);
         btnCam = (Button)(findViewById(R.id.btnCapture2));
+        Uri photoURI = takePhoto();
         btnCam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Uri photoURI = takePhoto();
             }
         });
-        System.out.print(photoURI.getEncodedPath());
-        imageView.setImageURI(photoURI);
     }
 
     private Uri takePhoto() {
@@ -71,6 +69,7 @@ public class MainPage extends AppCompatActivity {
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_CAPTURE_IMAGE);
+                imageView.setImageURI(photoURI);
                 return photoURI;
             }
         }
@@ -81,14 +80,9 @@ public class MainPage extends AppCompatActivity {
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CANADA).format(new Date());
-        String imageFileName = "PNG_" + timeStamp + "_";
+        String imageFileName = "price_image.png";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".png",         /* suffix */
-                storageDir      /* directory */
-        );
+        File image = new File(storageDir, imageFileName);
 
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();

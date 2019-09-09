@@ -5,15 +5,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.os.Environment;
+import androidx.core.content.FileProvider;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import java.io.File;
-import java.io.OutputStream;
-import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
@@ -21,12 +27,11 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.mobile.client.AWSMobileClient;
-import android.util.Log;
 
 
 public class MainPage extends AppCompatActivity {
     ImageView imageView;
-    Button btnCam2;
+    Button btnCam;
     private static final int REQUEST_CAPTURE_IMAGE=1;
 
     @Override
@@ -34,29 +39,60 @@ public class MainPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         AWSMobileClient.getInstance().initialize(this).execute();
-        Intent intent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent,REQUEST_CAPTURE_IMAGE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        Uri photoURI = takePhoto();
         setContentView(R.layout.main_page_layout);
-
         imageView = (ImageView)findViewById(R.id.textureView);
-        Bitmap bitmap = (Bitmap)data.getExtras().get("data");
-        imageView.setImageBitmap(bitmap);
-        btnCam2 = (Button)(findViewById(R.id.btnCapture2));
-        btnCam2.setOnClickListener(new View.OnClickListener() {
+        btnCam = (Button)(findViewById(R.id.btnCapture2));
+        btnCam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent,REQUEST_CAPTURE_IMAGE);
+                Uri photoURI = takePhoto();
             }
         });
-        File file = persistImage(bitmap);
-        uploadWithTransferUtility(file);
+        System.out.print(photoURI.getEncodedPath());
+        imageView.setImageURI(photoURI);
+    }
 
+    private Uri takePhoto() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_CAPTURE_IMAGE);
+                return photoURI;
+            }
+        }
+        return null;
+    }
+
+    String currentPhotoPath;
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CANADA).format(new Date());
+        String imageFileName = "PNG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".png",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 
     public void uploadWithTransferUtility(File file) {
@@ -107,23 +143,6 @@ public class MainPage extends AppCompatActivity {
 
         Log.d("YourActivity", "Bytes Transferrred: " + uploadObserver.getBytesTransferred());
         Log.d("YourActivity", "Bytes Total: " + uploadObserver.getBytesTotal());
-    }
-
-    private File persistImage(Bitmap bitmap) {
-        File filesDir = AppContext.getAppContext().getFilesDir();
-        File imageFile = new File(filesDir, "image.png");
-
-        OutputStream os;
-        try {
-            os = new FileOutputStream(imageFile);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
-            os.flush();
-            os.close();
-            return imageFile;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     public void NextPage(View view){
